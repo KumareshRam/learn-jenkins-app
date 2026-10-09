@@ -85,7 +85,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+      stage('Deploy') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -94,12 +94,18 @@ pipeline {
                 }
             }
 
+            environment {
+                PYTHON = '/usr/bin/python3'
+                npm_config_python = '/usr/bin/python3'
+            }
+
             steps {
                 sh '''
                     apk add --no-cache python3 make g++
 
                     python3 --version
-                    npm config set python /usr/bin/python3
+                    make --version
+                    g++ --version
 
                     npm install --no-save --package-lock=false netlify-cli
 
@@ -107,15 +113,12 @@ pipeline {
 
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
 
-                    node_modules/.bin/netlify status \
-                      --auth "$NETLIFY_AUTH_TOKEN"
-
                     node_modules/.bin/netlify deploy \
-                      --dir=build \
-                      --prod \
-                      --no-build \
-                      --site "$NETLIFY_SITE_ID" \
-                      --auth "$NETLIFY_AUTH_TOKEN"
+                    --dir=build \
+                    --prod \
+                    --no-build \
+                    --site "$NETLIFY_SITE_ID" \
+                    --auth "$NETLIFY_AUTH_TOKEN"
                 '''
             }
         }
