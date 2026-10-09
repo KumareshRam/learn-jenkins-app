@@ -85,7 +85,8 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli
+                    apk add --no-cache python3 make g++
+                    npm install --no-save --package-lock=false netlify-cli
                     node_modules/.bin/netlify --version
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
