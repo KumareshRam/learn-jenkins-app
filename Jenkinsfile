@@ -13,6 +13,7 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
+                    args '-u 1000:1000'
                 }
             }
             steps {
@@ -20,7 +21,6 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    rm -rf node_modules
                     npm ci
                     npm run build
                     ls -la
@@ -35,6 +35,7 @@ pipeline {
                         docker {
                             image 'node:18-alpine'
                             reuseNode true
+                            args '-u 1000:1000'
                         }
                     }
 
@@ -91,7 +92,7 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
-                    args '-u root:root'
+                    args '-u 1000:1000'
                 }
             }
 
@@ -127,7 +128,7 @@ pipeline {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
-                    args '-u root:root'
+                    args '-u 1000:1000'
                 }
             }
 
