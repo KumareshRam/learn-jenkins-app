@@ -57,14 +57,17 @@ pipeline {
                         docker {
                             image 'mcr.microsoft.com/playwright:v1.61.1-jammy'
                             reuseNode true
+                            args '-u 1000:1000'
                         }
                     }
 
                     steps {
                         sh '''
-                            npm install serve
+                            npm install --no-save --package-lock=false serve
                             node_modules/.bin/serve -s build &
                             sleep 10
+                            node -p "require('@playwright/test/package.json').version"
+                            npx playwright --version
                             npx playwright test --reporter=html
                         '''
                     }
@@ -96,19 +99,8 @@ pipeline {
                 }
             }
 
-            environment {
-                PYTHON = '/usr/bin/python3'
-                npm_config_python = '/usr/bin/python3'
-            }
-
             steps {
                 sh '''
-                    apk add --no-cache python3 make g++
-
-                    python3 --version
-                    make --version
-                    g++ --version
-
                     npm install --no-save --package-lock=false netlify-cli
 
                     node_modules/.bin/netlify --version
@@ -132,19 +124,8 @@ pipeline {
                 }
             }
 
-            environment {
-                PYTHON = '/usr/bin/python3'
-                npm_config_python = '/usr/bin/python3'
-            }
-
             steps {
                 sh '''
-                    apk add --no-cache python3 make g++
-
-                    python3 --version
-                    make --version
-                    g++ --version
-
                     npm install --no-save --package-lock=false netlify-cli
 
                     node_modules/.bin/netlify --version
@@ -165,6 +146,7 @@ pipeline {
                     docker {
                         image 'mcr.microsoft.com/playwright:v1.61.1-jammy'
                         reuseNode true
+                        args '-u 1000:1000'
                     }
                 }
 
@@ -174,6 +156,8 @@ pipeline {
 
                 steps {
                     sh '''
+                        node -p "require('@playwright/test/package.json').version"
+                        npx playwright --version
                         npx playwright test  --reporter=html
                     '''
                 }
