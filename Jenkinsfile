@@ -60,8 +60,7 @@ pipeline {
                     }
                     steps {
                         sh '''
-                            npm install --no-save --package-lock=false serve
-                            node_modules/.bin/serve -s build &
+                            serve -s build &
                             sleep 10
                             node -p "require('@playwright/test/package.json').version"
                             npx playwright --version
