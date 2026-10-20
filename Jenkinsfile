@@ -15,10 +15,13 @@ pipeline {
                     args "--entrypoint=''"
                 }
             }
-            steps{
+            withCredentials([usernamePassword(credentialsId: 'jenkins-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+               steps{
                 sh '''
                     aws --version
+                    aws s3 ls
                 '''
+            }
             }
         }
 
