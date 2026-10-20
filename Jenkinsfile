@@ -7,11 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Docker') {
-            steps {
-                sh 'docker build -t my-playwright .'
-            }
-        }
 
         stage('Build') {
             agent {
@@ -58,7 +53,7 @@ pipeline {
                 stage('E2E') {
                     agent {
                         docker {
-                            image 'mcr.microsoft.com/playwright:v1.64.0-jammy'
+                            image 'my-playwright'
                             reuseNode true
                             args '-u 1000:1000'
                         }
@@ -119,7 +114,7 @@ pipeline {
         stage('Staging E2E') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.64.0-jammy'
+                    image 'my-playwright'
                     reuseNode true
                     args '-u 1000:1000'
                 }
@@ -179,7 +174,7 @@ pipeline {
         stage('Prod E2E') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/playwright:v1.64.0-jammy'
+                    image 'my-playwright'
                     reuseNode true
                     args '-u 1000:1000'
                 }
