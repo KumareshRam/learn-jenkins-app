@@ -15,6 +15,18 @@ pipeline {
             }
         }
 
+        stage('Test EC2 Connection') {
+            steps {
+                sshagent(credentials: ['ec2-deploy-ssh']) {
+                    sh '''
+                        ssh -o BatchMode=yes \
+                            deploy@13.200.254.146 \
+                            "whoami && hostname && ls -ld /var/www/learn-jenkins-app"
+                    '''
+                }
+            }
+        }
+
         stage('Build') {
             agent {
                 docker {
