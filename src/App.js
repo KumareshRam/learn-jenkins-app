@@ -18,6 +18,9 @@ function App() {
       <p>
           Application version: 1
       </p>
+      <p>
+        Kumaresh App!!
+      </p>
     </div>
   );
 }
