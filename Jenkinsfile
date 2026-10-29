@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         REACT_APP_VERSION = "1.0.$BUILD_ID"
+        APP_NAME = 'jenkins-app'
         AWS_DEFAULT_REGION = 'ap-south-1'
         AWS_ECS_CLUSTER = 'jenkins-dev-cluster-prod'
         AWS_ECS_SERVICE_PROD = 'react-jenkins-prod-family-service-t5phpz58'
@@ -43,7 +44,7 @@ pipeline {
                     dnf install -y docker
                     aws --version
                     docker version
-                    docker build -t jenkins-app .
+                    docker build -t $APP_NAME:$REACT_APP_VERSION .
                 '''
             }
         }
