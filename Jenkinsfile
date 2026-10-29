@@ -22,6 +22,10 @@ pipeline {
                     sh '''
                         aws --version
                         aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
+                        aws ecs update-service \
+                        --cluster jenkins-dev-cluster-prod \
+                        --service react-jenkins-prod-family-service-t5phpz58 \
+                        --task-definition react-jenkins-prod-family:2
                     '''
                 }
             }
