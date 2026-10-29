@@ -19,13 +19,12 @@ pipeline {
 
             steps {
                 withCredentials([usernamePassword(credentialsId: 'jenkins-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    sh '''
+                   sh '''
                         aws --version
-                        aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
-                        aws ecs update-service \
-                        --cluster jenkins-dev-cluster-prod \
-                        --service react-jenkins-prod-family-service-t5phpz58 \
-                        --task-definition react-jenkins-prod-family:2
+                        yum install jq -y
+                        LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
+                        echo $LATEST_TD_REVISION
+                        aws ecs update-service --cluster jenkins-dev-cluster-prod --service  react-jenkins-prod-family-service-t5phpz58 --task-definition react-jenkins-prod-family:$LATEST_TD_REVISION
                     '''
                 }
             }
